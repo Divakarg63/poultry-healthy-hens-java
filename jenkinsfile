@@ -1,0 +1,31 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('gitchech out') {
+            steps {
+               checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[credentialsId: 'Divaa', url: 'https://github.com/Divakarg63/poultry-healthy-hens-java.git']])
+            }
+        }
+        stage ('stage validate') {
+            steps {
+                sh 'mvn validate'
+            }
+        }
+        stage ('stage compile') {
+            steps {
+                sh 'mvn compile'
+            }
+        }
+        stage ('stage test') {
+            steps {
+                sh 'mvn test'
+            }
+        }
+        stage ('stage package') {
+            steps {
+                sh 'mvn clean package'
+            }
+        }
+    }
+}
